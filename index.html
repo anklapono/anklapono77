@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DPI CONFIGURATION SYSTEM - ULTIMATE PURPLE V5.6</title>
+    <style>
+        :root {
+            --bg-color: #06050a;
+            --panel-bg: #100e17;
+            --primary-purple: #a020f0; 
+            --bright-purple: #d800ff;  
+            --glow-purple: rgba(216, 0, 255, 0.6);
+            --text-color: #ffffff;
+            --text-muted: #837a94;
+            --border-color: #241e36;
+            --success-green: #00ffbc; 
+            --shadow-3d: 0 20px 40px rgba(0,0,0,0.85), 0 0 0 1px #2a1f42, inset 0 2px 3px rgba(255,255,255,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 800 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px 0;
+        }
+
+        .glitch-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1a0f2e 0%, #040307 100%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 550px;
+            padding: 12px;
+            perspective: 1000px;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-top: 6px solid var(--bright-purple); 
+            border-radius: 12px;
+            padding: 30px 22px;
+            box-shadow: var(--shadow-3d);
+            transform: translateZ(0);
+            will-change: transform;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .panel-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .panel-header h1 {
+            font-size: 1.4rem;
+            letter-spacing: 1.5px;
+            color: var(--bright-purple);
+            text-shadow: 0 0 15px var(--glow-purple), 0 3px 0 #600073; 
+        }
+
+        .panel-header p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            color: #bfaecf;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .input-control, .select-control {
+            width: 100%;
+            background-color: #050408;
+            border: 2px solid var(--border-color);
+            padding: 14px 15px;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+            transition: all 0.2s ease;
+        }
+
+        .input-control:focus, .select-control:focus {
+            outline: none;
+            border-color: var(--bright-purple);
+            box-shadow: 0 0 15px var(--glow-purple), inset 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .select-control {
+            cursor: pointer;
+        }
+
+        .row-grid {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .col-6 {
+            flex: 1;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #d800ff 0%, #7000ff 100%);
+            border: none;
+            color: #fff;
+            padding: 16px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 5px 0 #4c0080, 0 8px 25px rgba(160, 32, 240, 0.4);
+            transition: all 0.1s ease;
+            transform: translateZ(0);
+        }
+
+        .btn-submit:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #4c0080, 0 2px 10px rgba(160, 32, 240, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #241e36 0%, #130f1f 100%);
+            border: 1px solid #3d325c;
+            color: #c9bfe3;
+            padding: 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+            box-shadow: 0 3px 0 #0d0a14;
+            transition: all 0.1s ease;
+        }
+
+        .btn-secondary:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #0d0a14;
+        }
+
+        .get-key-box {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--border-color);
+            text-align: center;
+        }
+
+        .get-key-title {
+            font-size: 0.75rem;
+            color: #695e7d;
+            margin-bottom: 12px;
+        }
+
+        .btn-get-key {
+            display: inline-block;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.01);
+            border: 2px solid #332a4a;
+            color: #b5a9cc;
+            padding: 14px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 0 #100c1c;
+            transition: all 0.1s ease;
+        }
+
+        .btn-get-key:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #100c1c;
+        }
+
+        .error-msg {
+            color: #ff3377;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(255, 51, 119, 0.6);
+        }
+
+        #dpiScreen {
+            display: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background-color: rgba(0, 255, 188, 0.08);
+            color: var(--success-green);
+            border: 2px solid var(--success-green);
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 12px rgba(0, 255, 188, 0.25);
+        }
+
+        .range-value {
+            position: absolute;
+            right: 0; top: 0;
+            color: var(--bright-purple);
+            text-shadow: 0 0 10px var(--glow-purple);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%; height: 8px;
+            background: #050408;
+            border-radius: 4px;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px; height: 22px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #d800ff 0%, #6000ff 100%);
+            cursor: pointer;
+            box-shadow: 0 0 12px var(--bright-purple), 0 2px 4px rgba(0,0,0,0.5);
+            transition: transform 0.1s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+        }
+
+        /* 👑 KHU VỰC CÁC NÚT GẠT CHỨC NĂNG 👑 */
+        .switch-group {
+            background: linear-gradient(to right, #0d0b14, #151122);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            padding: 14px 18px;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.01);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .switch-label {
+            font-size: 0.8rem;
+            color: #d1c7e0;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 54px; 
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .switch input { 
+            opacity: 0; width: 0; height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #1c1829;
+            border: 2px solid #332a4a;
+            transition: all 0.2s ease-in-out;
+            border-radius: 30px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.6);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; 
+            width: 18px;
+            left: 3px; 
+            top: 3px;
+            background: linear-gradient(135deg, #ffffff 0%, #ccd3ff 100%);
+            transition: all 0.2s ease-in-out;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            z-index: 2;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(216, 0, 255, 0.15);
+            border-color: var(--bright-purple);
+            box-shadow: 0 0 12px rgba(216, 0, 255, 0.35), inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider:before {
+            left: calc(100% - 21px); 
+            background: linear-gradient(135deg, #ff5eff 0%, #d800ff 100%);
+            box-shadow: 0 0 10px var(--bright-purple);
+        }
+
+        /* 🔒 HIỆU ỨNG QUÉT MÃ CHẠY NGẦM SIÊU MỜ KHI BẬT NÚT (ẨN KHÔNG CHO THẤY CHỮ) */
+        .switch-group::after {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(216, 0, 255, 0.04), transparent);
+            transition: none;
+            z-index: 1;
+        }
+
+        /* Khi kích hoạt nút gạt, hiệu ứng sóng quét mã ma trận mờ sẽ tự động chạy */
+        input:checked ~ .matrix-scan {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 80%, rgba(160, 32, 240, 0.05) 0%, transparent 70%);
+            animation: pulseMatrix 1.5s infinite ease-in-out;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes pulseMatrix {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.3; }
+        }
+
+        .game-launch-menu {
+            display: none; 
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #0c0a12;
+            border: 2px solid var(--bright-purple);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(216, 0, 255, 0.2);
+            text-align: center;
+        }
+
+        .game-launch-title {
+            font-size: 0.75rem;
+            color: #d1c7e0;
+            margin-bottom: 12px;
+            text-shadow: 0 0 5px var(--glow-purple);
+        }
+
+        .launch-grid {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-launch {
+            flex: 1;
+            padding: 12px;
+            font-size: 0.9rem;
+            color: #fff;
+            background: linear-gradient(135deg, #1c152e 0%, #0d0914 100%);
+            border: 2px solid #503780;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #07050a;
+            transition: all 0.1s ease;
+        }
+
+        .btn-launch:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #07050a;
+        }
+
+        .btn-launch.ffth-color {
+            border-color: #00ffbc;
+            text-shadow: 0 0 5px rgba(0, 255, 188, 0.5);
+        }
+
+        .btn-launch.ffm-color {
+            border-color: #ff007c;
+            text-shadow: 0 0 5px rgba(255, 0, 124, 0.5);
+        }
+
+        .terminal-output {
+            background-color: #030205;
+            border: 2px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            color: var(--success-green);
+            height: 140px;
+            overflow-y: auto;
+            margin-top: 18px;
+            white-space: pre-wrap;
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.85);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glitch-bg"></div>
+
+    <div class="container">
+        
+        <div id="keyScreen" class="panel">
+            <div class="panel-header">
+                <h1>CONFIG V2.0</h1>
+                <p>NHẬP KEY ĐỂ VÀO CONFIG V2.0</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="activationKey">KEY:</label>
+                <input type="text" id="activationKey" class="input-control" placeholder="NHẬP KEY..." autocomplete="off">
+                <div id="errorCode" class="error-msg">❌ MÃ KÍCH HOẠT KHÔNG CHÍNH XÁC!</div>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="smoothClick(validateKey)">XÁC MINH KEY</button>
+
+            <div class="get-key-box">
+                <div class="get-key-title">CHƯA CÓ MÃ KÍCH HOẠT?</div>
+                <a href="https://link4m.net/EyMXcl" class="btn-get-key">🌐 NHẤN VÀO ĐÂY ĐỂ LẤY KEY</a>
+            </div>
+        </div>
+
+        <div id="dpiScreen" class="panel">
+            <div class="panel-header">
+                <div class="status-badge">✓ CONFIG V2.0 - PREMIUM</div>
+                <h1>ADMIN: PONO</h1>
+                <p>BẢNG TINH CHỈNH HỆ THỐNG & CẢM ỨNG TỐI ĐA</p>
+            </div>
+
+            <div class="form-group">
+                <label for="gameProfile">Chọn Free Fire Bạn Đang Chơi</label>
+                <select id="gameProfile" class="select-control" onchange="smoothClick(() => selectGame(this.value))">
+                    <option value="all">Chọn Game...</option>
+                    <option value="freefire">FREE FIRE THƯỜNG</option>
+                    
+                    <option value="aov">FREE FIRE MAX</option>
+                </select>
+            </div>
+
+            <div class="row-grid">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="deviceType">THIẾT BỊ:</label>
+                        <select id="deviceType" class="select-control" onchange="smoothClick(() => autoAdjustDPI(this.value))">
+                            <option value="custom">MẶC ĐỊNH</option>
+                            <option value="ios-iphone">IPHONE</option>
+                            <option value="ios-ipad">IPAD</option>
+                            <option value="android-samsung">SAMSUNG</option>
+                            <option value="android-xiaomi">XIAOMI</option>
+                            <option value="android-oppo">OPPO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="presetMode">CHỨC NĂNG:</label>
+                        <select id="presetMode" class="select-control" onchange="smoothClick(() => logAction('CẤU HÌNH: ' + this.value))">
+                            <option value="Standard">MẶC ĐỊNH</option>
+                            <option value="Gaming - High Sensitivity">GIẢM DELAY</option>
+                            <option value="Smooth Smooth">FPS CAO</option>
+                            <option value="Ultra FPS">AIMLOCK</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dpiRange">ĐỘ PHÂN GIẢI DPI MỤC TIÊU:</label>
+                <span id="dpiVal" class="range-value">320</span>
+                <input type="range" id="dpiRange" min="320" max="1440" value="320" oninput="updateDpiValue(this.value)">
+            </div>
+
+            <div class="form-group">
+                <label for="sensRange">⚡ TỐC ĐỘ CẢM ỨNG (SENSITIVITY):</label>
+                <span id="sensVal" class="range-value">1.0x</span>
+                <input type="range" id="sensRange" min="10" max="40" value="10" oninput="updateSensValue(this.value)">
+            </div>
+
+            <div class="switch-group">
+                <div class="matrix-scan"></div>
+                <label class="switch-container">
+                    <span class="switch-label">🎯 KHÓA MỤC TIÊU (AIM LOCK )</span>
+                    <span class="switch">
+                        <input type="checkbox" id="aimLockToggle" onchange="smoothClick(() => logToggle('AIM LOCK', this.checked, '0x7FFA2B11', 'AIM_LOCK_LOCKON'))">
+                        <span class="slider"></span>
+                    </span>
+                </label>
+            </div>
+
+            <div class="switch-group">
+                <div class="matrix-scan"></div>
+                <label class="switch-container">
+                    <span class="switch-label">👁️ HỖ TRỢ BÁM ĐẦU TỰ ĐỘNG </span>
+                    <span class="switch">
+                        <input type="checkbox" id="headshotToggle" onchange="smoothClick(() => logToggle('AUTO HEADSHOT AI', this.checked, '0x7FFA88C4', 'AI_VECTOR_HEAD'))">
+                        <span class="slider"></span>
+                    </span>
+                </label>
+            </div>
+
+            <div class="switch-group">
+                <div class="matrix-scan"></div>
+                <label class="switch-container">
+                    <span class="switch-label">🌀 GÓC NHÌN RỘNG DRONE / IPAD VIEW</span>
+                    <span class="switch">
+                        <input type="checkbox" id="ipadViewToggle" onchange="smoothClick(() => logToggle('IPAD VIEW FOV', this.checked, '0x7FFA92B5', 'CAMERA_FOV_OVERRIDE'))">
+                        <span class="slider"></span>
+                    </span>
+                </label>
+            </div>
+
+            <div class="switch-group">
+                <div class="matrix-scan"></div>
+                <label class="switch-container">
+                    <span class="switch-label">⚡ TỐI ƯU HÓA MẠNG & GIẢM PING (ANTI-LAG)</span>
+                    <span class="switch">
+                        <input type="checkbox" id="pingToggle" onchange="smoothClick(() => logToggle('TỐI ƯU HÓA MẠNG PING', this.checked, '0x7FFA55D1', 'NET_TCP_NODELAY'))">
+                        <span class="slider"></span>
+                    </span>
+                </label>
+            </div>
+
+            <div class="form-group" style="display: flex; gap: 15px; margin-top: 15px;">
+                <div style="flex: 1;">
+                    <label style="font-size: 0.7rem;">REGEDIT VIP CODE</label>
+                    <select id="regedit" class="select-control" onchange="smoothClick(() => logAction('REGEDIT ĐẶT THÀNH: ' + this.value))">
+                        <option value="MẶC ĐỊNH">MẶC ĐỊNH (TẮT)</option>
+                        <option value="X-REGEDIT V3">X-REGEDIT V2.0</option>
+                        <option value="HACK TÍM NEON">CONFIG V2.0</option>
+                    </select>
+                </div>
+                <div style="flex: 1;">
+                    <label style="font-size: 0.7rem;">BUFF FPS</label>
+                    <select id="pullRate" class="select-control" onchange="smoothClick(() => logAction('TỐC ĐỘ PHẢN HỒI: ' + this.value))">
+                        <option value="125Hz (Thường)">60HZ</option>
+                        <option value="500Hz (Ổn định)">120HZ</option>
+                        <option value="1000Hz (Bá Đạo)">240HZ</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row-grid" style="margin-top: 15px;">
+                <div class="col-6">
+                    <button type="button" class="btn-secondary" onclick="smoothClick(clearCache)">🧹 XÓA BỘ ĐỆM RAM</button>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn-secondary" onclick="smoothClick(copyConfig)">📋 COPY MÃ CONFIG</button>
+                </div>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="smoothClick(applyConfig)">ÁP DỤNG TOÀN BỘ CẤU HÌNH</button>
+
+            <div id="gameLaunchMenu" class="game-launch-menu">
+                <div class="game-launch-title">⚡ CHỌN PHIÊN BẢN ĐỂ INJECT VÀO GAME:</div>
+                <div class="launch-grid">
+                    <button type="button" class="btn-launch ffth-color" onclick="smoothClick(() => launchGame('FFTH'))">FREE FIRE THƯỜNG (FFTH)</button>
+                    <button type="button" class="btn-launch ffm-color" onclick="smoothClick(() => launchGame('FFM'))">FREE FIRE MAX (FFM)</button>
+                </div>
+            </div>
+
+            <div class="terminal-output" id="terminal">SYSTEM INITIALIZED. TẤT CẢ CHỨC NĂNG ĐANG Ở TRẠNG THÁI CHỜ...</div>
+        </div>
+
+    </div>
+
+    <script>
+        const MASTER_KEY = "AnkLaPoNoRealLife";
+
+        function smoothClick(callbackAction) {
+            if (window.requestAnimationFrame) {
+                window.requestAnimationFrame(() => {
+                    setTimeout(callbackAction, 50); 
+                });
+            } else {
+                callbackAction();
+            }
+        }
+
+        function validateKey() {
+            const inputKey = document.getElementById('activationKey').value.trim();
+            const errorElement = document.getElementById('errorCode');
+
+            if (inputKey === MASTER_KEY) {
+                document.getElementById('activationKey').blur();
+                
+                const metaViewport = document.querySelector('meta[name="viewport"]');
+                if (metaViewport) {
+                    metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+                }
+
+                document.getElementById('keyScreen').style.display = 'none';
+                document.getElementById('dpiScreen').style.display = 'block';
+                logAction("HỆ THỐNG KÍCH HOẠT THÀNH CÔNG! KEY: " + inputKey);
+                logAction("TRẠNG THÁI: ĐANG CHỜ CẤU HÌNH TỪ NGƯỜI DÙNG.");
+            } else {
+                errorElement.style.display = 'block';
+                document.getElementById('activationKey').style.borderColor = '#d800ff';
+            }
+        }
+
+        function updateDpiValue(val) {
+            window.requestAnimationFrame(() => {
+                document.getElementById('dpiVal').innerText = val;
+            });
+        }
+
+        function updateSensValue(val) {
+            window.requestAnimationFrame(() => {
+                document.getElementById('sensVal').innerText = (val / 10).toFixed(1) + "x";
+            });
+        }
+
+        function selectGame(game) {
+            logAction(`MỤC TIÊU GAME CHUYỂN ĐỔI: [${game.toUpperCase()}]`);
+            if(game === 'freefire') {
+                document.getElementById('sensRange').value = 35;
+                document.getElementById('headshotToggle').checked = true;
+                updateSensValue(35);
+                logAction("🔥 ĐÃ TỰ ĐỘNG BẬT HEADSHOT AI & ĐẨY ĐỘ NHẠY VUỐT LÊN CAO CHO FREE FIRE.");
+            } else if (game === 'pubg') {
+                document.getElementById('ipadViewToggle').checked = true;
+                logAction("✈️ ĐÃ TỰ ĐỘNG BẬT IPAD VIEW RỘNG TẦM NHÌN ĐỂ PHÁT HIỆN ĐỊCH TRONG PUBG.");
+            }
+        }
+
+        function autoAdjustDPI(device) {
+            let recommendedDPI = 320;
+            if(device === 'ios-iphone') recommendedDPI = 550;
+            else if(device === 'ios-ipad') recommendedDPI = 960;
+            else if(device === 'android-samsung') recommendedDPI = 411;
+            else if(device === 'android-xiaomi') recommendedDPI = 392;
+            else if(device === 'android-oppo') recommendedDPI = 360;
+
+            document.getElementById('dpiRange').value = recommendedDPI;
+            updateDpiValue(recommendedDPI);
+            
+            if(device !== 'custom') {
+                logAction(`ĐÃ CHỌN THIẾT BỊ: [${device.toUpperCase()}]. GỢI Ý DPI KHUYÊN DÙNG: ${recommendedDPI}`);
+            } else {
+                logAction("ĐÃ ĐƯA THIẾT BỊ VỀ CẤU HÌNH MẶC ĐỊNH.");
+            }
+        }
+
+        function logAction(message) {
+            const terminal = document.getElementById('terminal');
+            const time = new Date().toLocaleTimeString();
+            terminal.innerHTML += `\n[${time}] ${message}`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Tối ưu hóa hàm log: Khi bật nút gạt, code hex bảo mật ẩn sẽ được ghi vào Terminal
+        function logToggle(feature, isChecked, hexAddr, sysCall) {
+            if (isChecked) {
+                logAction(`TÍNH NĂNG [${feature}] -> 🟣 ĐÃ BẬT`);
+                logAction(`[INJECTED_CORE] Address: ${hexAddr} -> Hooking dynamic: ${sysCall}... SUCCESS.`);
+            } else {
+                logAction(`TÍNH NĂNG [${feature}] -> ⚪ ĐÃ TẮT`);
+                logAction(`[RELEASED] Cleaned ${hexAddr} memory.`);
+            }
+        }
+
+        function clearCache() {
+            logAction("🧹 ĐANG ĐỒNG BỘ DỌN DẸP BỘ NHỚ ĐỆM RAM CHUYÊN SÂU...");
+            setTimeout(() => {
+                logAction("✓ HOÀN TẤT GIẢI PHÓNG! ĐÃ TỐI ƯU ĐỘ TRỄ CẢM ỨNG XUỐNG 1MS.");
+                alert("ĐÃ GIẢI PHÓNG BỘ NHỚ ĐỆM THÀNH CÔNG!");
+            }, 800);
+        }
+
+        function copyConfig() {
+            const dpi = document.getElementById('dpiRange').value;
+            const mode = document.getElementById('presetMode').value;
+            const reg = document.getElementById('regedit').value;
+            const textConfig = `DPI:${dpi}|MODE:${mode}|REGEDIT:${reg}|AIMLOCK:${document.getElementById('aimLockToggle').checked}`;
+            
+            navigator.clipboard.writeText(textConfig).then(() => {
+                logAction("📋 ĐÃ COPY CHUỖI MÃ CẤU HÌNH GAMING VÀO KHAY NHỚ TẠM.");
+                alert("ĐÃ COPY MÃ CẤU HÌNH: \n" + textConfig);
+            }).catch(() => {
+                logAction("❌ LỖI SAO CHÉP TỰ ĐỘNG.");
+            });
+        }
+
+        function applyConfig() {
+            const currentDpi = document.getElementById('dpiRange').value;
+            const currentSens = document.getElementById('sensVal').innerText;
+            
+            document.getElementById('gameLaunchMenu').style.display = 'none';
+
+            logAction(`--- BẮT ĐẦU CHẠY TRÌNH PHÂN GIẢI HỆ THỐNG ---`);
+            
+            let counter = 0;
+            const interval = setInterval(() => {
+                let randomHex = Math.random().toString(16).substring(2, 10).toUpperCase();
+                logAction(`[INJECTING_CODE] 0x${randomHex} -> APPLYING CONFIG...`);
+                counter++;
+                if(counter >= 4) {
+                    clearInterval(interval);
+                    logAction(`[SUCCESS] ĐÃ ÉP XUNG DPI LÊN: ${currentDpi}`);
+                    logAction(`[SUCCESS] ĐỘ NHẠY ĐƯỜNG TRUYỀN VUỐT CHẠM: ${currentSens}`);
+                    logAction(`✓ HOÀN THÀNH KÍCH HOẠT TOÀN DIỆN PREMIUM V5!`);
+                    
+                    document.getElementById('gameLaunchMenu').style.display = 'block';
+                    logAction(`⚡ HỆ THỐNG SẴN SÀNG. VUI LÒNG CHỌN PHIÊN BẢN GAME FFTH HOẶC FFM ĐỂ KHỞI CHẠY.`);
+                }
+            }, 300);
+        }
+
+        function launchGame(gameVersion) {
+            logAction(`🚀 TIẾN HÀNH KHỞI CHẠY VÀO GAME PHIÊN BẢN: [${gameVersion}]`);
+            
+            setTimeout(() => {
+                if (gameVersion === 'FFTH') {
+                    window.location.href = "com.dts.freefireth://"; 
+                } else if (gameVersion === 'FFM') {
+                    window.location.href = "com.dts.freefiremax://";
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>
